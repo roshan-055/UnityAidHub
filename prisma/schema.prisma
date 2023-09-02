@@ -38,8 +38,8 @@ model Post {
   description   String
   startDate     DateTime?
   endDate       DateTime?
-  goalAmount    Float
-  currentAmount Float
+  goalAmount    Int
+  currentAmount Int
   imageUrl      String?
   view          String
   createdAt     DateTime   @default(now())
@@ -48,12 +48,14 @@ model Post {
   postId        Int
   donations     Donation[]
   Comment       Comment[]
+  Category      Category?  @relation(fields: [categoryId], references: [id])
+  categoryId    Int?
 }
 
 model Donation {
   id           Int      @id @default(autoincrement())
   amount       Float
-  description  String?
+  remarks      String?
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
   donor        User     @relation(fields: [donorId], references: [id])
@@ -61,6 +63,35 @@ model Donation {
   fundraiser   Post     @relation(fields: [fundraiserId], references: [id])
   fundraiserId Int
 }
+
+model Category {
+  id          Int           @id @default(autoincrement())
+  name        String
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+  SubCategory SubCategory[]
+  post        Post[]
+}
+
+model SubCategory {
+  id         Int       @id @default(autoincrement())
+  name       String
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
+  categoryId Int?
+  Category   Category? @relation(fields: [categoryId], references: [id])
+}
+
+//list of subcategory
+//Education
+//Health
+//Shelter
+//Food
+//Pets and animals
+//Events
+//Financial
+//Disaster
+//Environment and Sanitation
 
 // model EmailNotification {
 //   id          Int       @id @default(autoincrement())
