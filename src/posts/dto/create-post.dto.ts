@@ -1,5 +1,6 @@
 import { ApiProperty } from "@nestjs/swagger";
-import { IsNotEmpty, IsOptional, IsString } from "class-validator";
+import { Status } from "@prisma/client";
+import { IsEnum, IsNotEmpty, IsOptional, IsString } from "class-validator";
 
 export class CreatePostDto {
 
@@ -34,4 +35,10 @@ export class CreatePostDto {
 
     @ApiProperty()
     view: number;
+
+    @ApiProperty({ default: 'NOTVERIFIED' })
+    status: Status;
+
+    @ApiProperty()
+    categoryId: number;
 }

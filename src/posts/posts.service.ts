@@ -17,6 +17,8 @@ export class PostsService {
       currentAmount,
       imageUrl,
       view,
+      status,
+      categoryId,
     } = createPostDto
 
     const post = await this.prisma.post.create({
@@ -29,6 +31,13 @@ export class PostsService {
         currentAmount,
         imageUrl,
         view,
+        status,
+        categoryId,
+      },
+      include: {
+        donations: true,
+        Comment: true,
+        Category: true,
       }
     });
     return post;

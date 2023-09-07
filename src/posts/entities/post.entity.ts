@@ -1,5 +1,5 @@
 import { ApiProperty } from "@nestjs/swagger";
-import { Post } from "@prisma/client";
+import { $Enums, Post, Status } from "@prisma/client";
 
 export class PostEntity implements Post {
 
@@ -29,6 +29,9 @@ export class PostEntity implements Post {
 
     @ApiProperty()
     view: number;
+
+    @ApiProperty()
+    status: Status;
 
     @ApiProperty()
     createdAt: Date;

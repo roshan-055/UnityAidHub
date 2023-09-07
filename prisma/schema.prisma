@@ -27,7 +27,7 @@ model TokenBlacklist {
 }
 
 model Post {
-  id            Int        @id @default(autoincrement())
+  id            Int         @id @default(autoincrement())
   title         String
   description   String
   startDate     DateTime?
@@ -36,12 +36,58 @@ model Post {
   currentAmount Int
   imageUrl      String?
   view          Int?
-  createdAt     DateTime   @default(now())
-  updatedAt     DateTime   @updatedAt
+  status        Status
+  createdAt     DateTime    @default(now())
+  updatedAt     DateTime    @updatedAt
   donations     Donation[]
   Comment       Comment[]
-  Category      Category?  @relation(fields: [categoryId], references: [id])
+  Category      Category?   @relation(fields: [categoryId], references: [id])
   categoryId    Int?
+  Fundraiser    Fundraiser? @relation(fields: [fundraiserId], references: [id])
+  fundraiserId  Int?
+}
+
+model Fundraiser {
+  id                 Int                 @id @default(autoincrement())
+  name               String
+  phoneNumber        String
+  address            String
+  email              String
+  requiredAmount     Int
+  identityDocument   String
+  description        String
+  supportingDocument String[]
+  url                String?
+  secretKey          String
+  createdAt          DateTime            @default(now())
+  updatedAt          DateTime            @updatedAt
+  post               Post[]
+  withdrawal         WithdrawalForm[]
+  emailNotification  EmailNotification[]
+}
+
+model WithdrawalForm {
+  id               Int         @id @default(autoincrement())
+  withdrawalAmount Int
+  withdrawalType   Payment
+  accountNumber    String
+  accountName      String
+  identityDocument String
+  Fundraiser       Fundraiser? @relation(fields: [fundraiserId], references: [id])
+  fundraiserId     Int?
+}
+
+enum Payment {
+  BANK
+  ESEWA
+  KHALTI
+  FONEPAY
+  PAYPAL
+}
+
+enum Status {
+  VERIFIED
+  NOTVERIFIED
 }
 
 model Donation {
@@ -52,6 +98,19 @@ model Donation {
   updatedAt    DateTime @updatedAt
   fundraiser   Post     @relation(fields: [fundraiserId], references: [id])
   fundraiserId Int
+  Donor        Donor?   @relation(fields: [donorId], references: [id])
+  donorId      Int?
+}
+
+model Donor {
+  id          Int        @id @default(autoincrement())
+  name        String
+  email       String
+  phoneNumber String
+  address     String
+  donation    Donation[]
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
 }
 
 model Category {
@@ -83,15 +142,16 @@ model SubCategory {
 //Disaster
 //Environment and Sanitation
 
-// model EmailNotification {
-//   id          Int       @id @default(autoincrement())
-//   subject     String?
-//   body        String?
-//   sentAt      DateTime?
-//   recipientId Int
-//   recipient   User      @relation(fields: [recipientId], references: [id])
-//   attachments String?
-// }
+model EmailNotification {
+  id           Int         @id @default(autoincrement())
+  subject      String?
+  body         String?
+  attachments  String?
+  createdAt    DateTime    @default(now())
+  updatedAt    DateTime    @updatedAt
+  Fundraiser   Fundraiser? @relation(fields: [fundraiserId], references: [id])
+  fundraiserId Int?
+}
 
 model Ads {
   id          Int      @id @default(autoincrement())
@@ -111,8 +171,10 @@ model Ads {
 // }
 
 model Comment {
-  id           Int    @id @default(autoincrement())
+  id           Int      @id @default(autoincrement())
   body         String
   fundraiserNo Int
-  fundraiser   Post   @relation(fields: [fundraiserNo], references: [id])
+  fundraiser   Post     @relation(fields: [fundraiserNo], references: [id])
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
 }
