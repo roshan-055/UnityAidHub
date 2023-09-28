@@ -1,44 +1,46 @@
-import { ApiProperty } from "@nestjs/swagger";
-import { $Enums, Post, Status } from "@prisma/client";
+import { ApiProperty } from '@nestjs/swagger';
+import { Post, Status } from '@prisma/client';
 
 export class PostEntity implements Post {
+  @ApiProperty()
+  id: number;
 
-    @ApiProperty()
-    id: number;
+  @ApiProperty()
+  title: string;
 
-    @ApiProperty()
-    title: string;
+  @ApiProperty()
+  description: string;
 
-    @ApiProperty()
-    description: string;
+  @ApiProperty()
+  startDate: Date;
 
-    @ApiProperty()
-    startDate: Date;
+  @ApiProperty()
+  endDate: Date;
 
-    @ApiProperty()
-    endDate: Date;
+  @ApiProperty()
+  goalAmount: number;
 
-    @ApiProperty()
-    goalAmount: number;
+  @ApiProperty()
+  currentAmount: number;
 
-    @ApiProperty()
-    currentAmount: number;
+  @ApiProperty()
+  imageUrl: string;
 
-    @ApiProperty()
-    imageUrl: string;
+  @ApiProperty()
+  view: number;
 
-    @ApiProperty()
-    view: number;
+  @ApiProperty()
+  status: Status;
 
-    @ApiProperty()
-    status: Status;
+  @ApiProperty()
+  createdAt: Date;
 
-    @ApiProperty()
-    createdAt: Date;
+  @ApiProperty()
+  updatedAt: Date;
 
-    @ApiProperty()
-    updatedAt: Date;
+  @ApiProperty()
+  categoryId: number;
 
-    @ApiProperty()
-    categoryId: number;
+  @ApiProperty()
+  fundraiserId: number;
 }

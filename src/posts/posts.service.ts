@@ -1,11 +1,13 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException, Injectable, NotFoundException } from '@nestjs/common';
 import { CreatePostDto } from './dto/create-post.dto';
 import { UpdatePostDto } from './dto/update-post.dto';
 import { PrismaService } from 'src/prisma/prisma.service';
+import { error } from 'console';
+import { Status } from '@prisma/client';
 
 @Injectable()
 export class PostsService {
-  constructor(private prisma: PrismaService) { }
+  constructor(private prisma: PrismaService) {}
 
   async create(createPostDto: CreatePostDto) {
     const {
@@ -19,8 +21,8 @@ export class PostsService {
       view,
       status,
       categoryId,
-    } = createPostDto
-
+      fundraiserId,
+    } = createPostDto;
     const post = await this.prisma.post.create({
       data: {
         title,
@@ -32,33 +34,63 @@ export class PostsService {
         imageUrl,
         view,
         status,
-        categoryId,
+        fundraiserId: Number(fundraiserId),
+        categoryId: Number(categoryId),
       },
       include: {
-        donations: true,
-        Comment: true,
-        Category: true,
-      }
+        Fundraiser: {
+          select: {
+            name: true,
+          },
+        },
+        Category: {
+          select: {
+            name: true,
+          },
+        },
+      },
     });
     return post;
   }
 
-  findAll() {
-    return this.prisma.post.findMany();
+  async findAll() {
+    return await this.prisma.post.findMany({
+      include: {
+        Fundraiser: {
+          select: {
+            name: true,
+            description: true,
+          },
+        },
+        Category: {
+          select: {
+            name: true,
+          },
+        },
+      },
+    });
   }
 
-  findOne(id: number) {
-    return this.prisma.post.findUnique({ where: { id: id } });
+  async findOne(id: number) {
+    const post = await this.prisma.post.findUnique({ where: { id: id } });
+    if (!post) {
+      throw new NotFoundException('Post not found');
+    }
+    const updatedPost = await this.prisma.post.update({
+      where: { id: post.id },
+      data: { view: post.view + 1 },
+    });
+    return updatedPost;
   }
 
-  update(id: number, updatePostDto: UpdatePostDto) {
-    return this.prisma.post.update({
+  async update(id: number, updatePostDto: UpdatePostDto) {
+    return await this.prisma.post.update({
       where: { id: id },
       data: updatePostDto,
     });
   }
 
-  remove(id: number) {
-    return this.prisma.post.delete({ where: { id: id } });
+  async remove(id: number) {
+    return await this.prisma.post.delete({ where: { id: id } });
   }
 }
