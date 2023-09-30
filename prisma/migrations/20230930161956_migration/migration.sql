@@ -4,6 +4,9 @@ CREATE TYPE "Payment" AS ENUM ('BANK', 'ESEWA', 'KHALTI', 'FONEPAY', 'PAYPAL');
 -- CreateEnum
 CREATE TYPE "Status" AS ENUM ('VERIFIED', 'NOTVERIFIED');
 
+-- CreateEnum
+CREATE TYPE "Activity" AS ENUM ('ACTIVE', 'INACTIVE');
+
 -- CreateTable
 CREATE TABLE "Admin" (
     "id" SERIAL NOT NULL,
@@ -27,7 +30,7 @@ CREATE TABLE "Post" (
     "currentAmount" INTEGER NOT NULL,
     "imageUrl" TEXT,
     "view" INTEGER,
-    "status" "Status" NOT NULL,
+    "status" "Status" DEFAULT 'NOTVERIFIED',
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
     "categoryId" INTEGER NOT NULL,
@@ -134,10 +137,21 @@ CREATE TABLE "Ads" (
     "title" TEXT NOT NULL,
     "description" TEXT,
     "imageUrl" TEXT,
+    "activity" "Activity" NOT NULL DEFAULT 'ACTIVE',
+    "companyName" TEXT,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
+    "adCategoryId" INTEGER NOT NULL,
 
     CONSTRAINT "Ads_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "AdCategory" (
+    "id" SERIAL NOT NULL,
+    "name" TEXT NOT NULL,
+
+    CONSTRAINT "AdCategory_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
@@ -174,6 +188,9 @@ ALTER TABLE "SubCategory" ADD CONSTRAINT "SubCategory_categoryId_fkey" FOREIGN K
 
 -- AddForeignKey
 ALTER TABLE "EmailNotification" ADD CONSTRAINT "EmailNotification_fundraiserId_fkey" FOREIGN KEY ("fundraiserId") REFERENCES "Fundraiser"("id") ON DELETE SET NULL ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "Ads" ADD CONSTRAINT "Ads_adCategoryId_fkey" FOREIGN KEY ("adCategoryId") REFERENCES "AdCategory"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "Comment" ADD CONSTRAINT "Comment_fundraiserNo_fkey" FOREIGN KEY ("fundraiserNo") REFERENCES "Post"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
