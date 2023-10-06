@@ -153,6 +153,8 @@ model Ads {
   imageUrl     String?
   activity     Activity   @default(ACTIVE)
   companyName  String?
+  startDate    DateTime?
+  endDate      DateTime?
   createdAt    DateTime   @default(now())
   updatedAt    DateTime   @updatedAt
   AdCategory   AdCategory @relation(fields: [adCategoryId], references: [id])
