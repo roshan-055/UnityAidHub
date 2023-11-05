@@ -1,9 +1,19 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+} from '@nestjs/common';
 import { WithdrawalFormService } from './withdrawal-form.service';
 import { CreateWithdrawalFormDto } from './dto/create-withdrawal-form.dto';
 import { UpdateWithdrawalFormDto } from './dto/update-withdrawal-form.dto';
+import { ApiTags } from '@nestjs/swagger';
 
 @Controller('withdrawal-form')
+@ApiTags('withdrawal-form')
 export class WithdrawalFormController {
   constructor(private readonly withdrawalFormService: WithdrawalFormService) {}
 
@@ -23,7 +33,10 @@ export class WithdrawalFormController {
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateWithdrawalFormDto: UpdateWithdrawalFormDto) {
+  update(
+    @Param('id') id: string,
+    @Body() updateWithdrawalFormDto: UpdateWithdrawalFormDto,
+  ) {
     return this.withdrawalFormService.update(+id, updateWithdrawalFormDto);
   }
 

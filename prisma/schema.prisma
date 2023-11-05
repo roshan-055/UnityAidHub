@@ -181,10 +181,10 @@ model AdCategory {
 // }
 
 model Comment {
-  id           Int      @id @default(autoincrement())
-  body         String
-  fundraiserNo Int
-  fundraiser   Post     @relation(fields: [fundraiserNo], references: [id])
-  createdAt    DateTime @default(now())
-  updatedAt    DateTime @updatedAt
+  id        Int      @id @default(autoincrement())
+  body      String
+  postId    Int
+  post      Post     @relation(fields: [postId], references: [id])
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
