@@ -21,6 +21,12 @@ export class AdEntity implements Ads {
   companyName: string;
 
   @ApiProperty()
+  startDate: Date | null;
+
+  @ApiProperty()
+  endDate: Date | null;
+
+  @ApiProperty()
   createdAt: Date;
 
   @ApiProperty()

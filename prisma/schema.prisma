@@ -153,6 +153,8 @@ model Ads {
   imageUrl     String?
   activity     Activity   @default(ACTIVE)
   companyName  String?
+  startDate    DateTime?
+  endDate      DateTime?
   createdAt    DateTime   @default(now())
   updatedAt    DateTime   @updatedAt
   AdCategory   AdCategory @relation(fields: [adCategoryId], references: [id])
@@ -179,10 +181,10 @@ model AdCategory {
 // }
 
 model Comment {
-  id           Int      @id @default(autoincrement())
-  body         String
-  fundraiserNo Int
-  fundraiser   Post     @relation(fields: [fundraiserNo], references: [id])
-  createdAt    DateTime @default(now())
-  updatedAt    DateTime @updatedAt
+  id        Int      @id @default(autoincrement())
+  body      String
+  postId    Int
+  post      Post     @relation(fields: [postId], references: [id])
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }

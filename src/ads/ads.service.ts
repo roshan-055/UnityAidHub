@@ -15,6 +15,8 @@ export class AdsService {
       activity,
       companyName,
       adCategoryId,
+      startDate,
+      endDate,
     } = createAdDto;
     const ads = await this.prisma.ads.create({
       data: {
@@ -23,6 +25,8 @@ export class AdsService {
         imageUrl,
         activity,
         companyName,
+        startDate,
+        endDate,
         adCategoryId: Number(adCategoryId),
       },
     });

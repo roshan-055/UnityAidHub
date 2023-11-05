@@ -41,15 +41,18 @@ export class FundraisersService {
     return await this.prisma.fundraiser.findMany();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} fundraiser`;
+  async findOne(id: number) {
+    return await this.prisma.fundraiser.findUnique({ where: { id: id } });
   }
 
-  update(id: number, updateFundraiserDto: UpdateFundraiserDto) {
-    return `This action updates a #${id} fundraiser`;
+  async update(id: number, updateFundraiserDto: UpdateFundraiserDto) {
+    return await this.prisma.fundraiser.update({
+      where: { id },
+      data: updateFundraiserDto,
+    });
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} fundraiser`;
+  async remove(id: number) {
+    return await this.prisma.fundraiser.delete({ where: { id: id } });
   }
 }

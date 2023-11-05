@@ -9,6 +9,11 @@ import { CategoryModule } from './category/category.module';
 import { FundraisersModule } from './fundraisers/fundraisers.module';
 import { AdsModule } from './ads/ads.module';
 import { AdCategoryModule } from './ad-category/ad-category.module';
+import { WithdrawalFormModule } from './withdrawal-form/withdrawal-form.module';
+import { DonorsModule } from './donors/donors.module';
+import { DonationsModule } from './donations/donations.module';
+import { CommentsModule } from './comments/comments.module';
+import { EmailNotificationsModule } from './email-notifications/email-notifications.module';
 @Module({
   imports: [
     PrismaModule,
@@ -19,6 +24,11 @@ import { AdCategoryModule } from './ad-category/ad-category.module';
     FundraisersModule,
     AdsModule,
     AdCategoryModule,
+    WithdrawalFormModule,
+    DonorsModule,
+    DonationsModule,
+    CommentsModule,
+    EmailNotificationsModule,
   ],
   controllers: [AppController],
   providers: [AppService],
