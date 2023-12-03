@@ -56,7 +56,6 @@ model Fundraiser {
   updatedAt          DateTime            @updatedAt
   post               Post[]
   withdrawal         WithdrawalForm[]
-  emailNotification  EmailNotification[]
 }
 
 model WithdrawalForm {
@@ -134,17 +133,6 @@ model SubCategory {
 //Financial
 //Disaster
 //Environment and Sanitation
-
-model EmailNotification {
-  id           Int         @id @default(autoincrement())
-  subject      String?
-  body         String?
-  attachments  String?
-  createdAt    DateTime    @default(now())
-  updatedAt    DateTime    @updatedAt
-  Fundraiser   Fundraiser? @relation(fields: [fundraiserId], references: [id])
-  fundraiserId Int?
-}
 
 model Ads {
   id           Int        @id @default(autoincrement())
