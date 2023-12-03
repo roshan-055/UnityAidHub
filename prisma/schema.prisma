@@ -110,29 +110,8 @@ model Category {
   name        String
   createdAt   DateTime      @default(now())
   updatedAt   DateTime      @updatedAt
-  SubCategory SubCategory[]
   post        Post[]
 }
-
-model SubCategory {
-  id         Int       @id @default(autoincrement())
-  name       String
-  createdAt  DateTime  @default(now())
-  updatedAt  DateTime  @updatedAt
-  categoryId Int?
-  Category   Category? @relation(fields: [categoryId], references: [id])
-}
-
-//list of subcategory
-//Education
-//Health
-//Shelter
-//Food
-//Pets and animals
-//Events
-//Financial
-//Disaster
-//Environment and Sanitation
 
 model Ads {
   id           Int        @id @default(autoincrement())
@@ -159,14 +138,6 @@ model AdCategory {
   name String
   ads  Ads[]
 }
-
-// model Like {
-//   id           Int  @id @default(autoincrement())
-//   userId       Int
-//   user         User @relation(fields: [userId], references: [id])
-//   fundraiserNo Int
-//   fundraiser   Post @relation(fields: [fundraiserNo], references: [id])
-// }
 
 model Comment {
   id        Int      @id @default(autoincrement())
