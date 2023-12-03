@@ -119,19 +119,6 @@ CREATE TABLE "SubCategory" (
 );
 
 -- CreateTable
-CREATE TABLE "EmailNotification" (
-    "id" SERIAL NOT NULL,
-    "subject" TEXT,
-    "body" TEXT,
-    "attachments" TEXT,
-    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    "updatedAt" TIMESTAMP(3) NOT NULL,
-    "fundraiserId" INTEGER,
-
-    CONSTRAINT "EmailNotification_pkey" PRIMARY KEY ("id")
-);
-
--- CreateTable
 CREATE TABLE "Ads" (
     "id" SERIAL NOT NULL,
     "title" TEXT NOT NULL,
@@ -139,6 +126,8 @@ CREATE TABLE "Ads" (
     "imageUrl" TEXT,
     "activity" "Activity" NOT NULL DEFAULT 'ACTIVE',
     "companyName" TEXT,
+    "startDate" TIMESTAMP(3),
+    "endDate" TIMESTAMP(3),
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
     "adCategoryId" INTEGER NOT NULL,
@@ -158,7 +147,7 @@ CREATE TABLE "AdCategory" (
 CREATE TABLE "Comment" (
     "id" SERIAL NOT NULL,
     "body" TEXT NOT NULL,
-    "fundraiserNo" INTEGER NOT NULL,
+    "postId" INTEGER NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
 
@@ -187,10 +176,7 @@ ALTER TABLE "Donation" ADD CONSTRAINT "Donation_donorId_fkey" FOREIGN KEY ("dono
 ALTER TABLE "SubCategory" ADD CONSTRAINT "SubCategory_categoryId_fkey" FOREIGN KEY ("categoryId") REFERENCES "Category"("id") ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "EmailNotification" ADD CONSTRAINT "EmailNotification_fundraiserId_fkey" FOREIGN KEY ("fundraiserId") REFERENCES "Fundraiser"("id") ON DELETE SET NULL ON UPDATE CASCADE;
-
--- AddForeignKey
 ALTER TABLE "Ads" ADD CONSTRAINT "Ads_adCategoryId_fkey" FOREIGN KEY ("adCategoryId") REFERENCES "AdCategory"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "Comment" ADD CONSTRAINT "Comment_fundraiserNo_fkey" FOREIGN KEY ("fundraiserNo") REFERENCES "Post"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "Comment" ADD CONSTRAINT "Comment_postId_fkey" FOREIGN KEY ("postId") REFERENCES "Post"("id") ON DELETE RESTRICT ON UPDATE CASCADE;

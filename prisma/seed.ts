@@ -8,7 +8,7 @@ async function main() {
   const hashedPassword = hashPassword('password');
   const admins = [
     {
-      name: 'Sahayog',
+      name: 'UnityAidHub',
       email: 'admin@gmail.com',
       password: hashedPassword,
     },
@@ -54,10 +54,10 @@ async function main() {
       secretKey: 'Ab12',
     },
     {
-      name: 'Safal',
+      name: 'Nabin',
       phoneNumber: '9865743248',
-      address: 'Pokhara,Birauta',
-      email: 'Safal@gmail.com',
+      address: 'Pokhara,chauthe',
+      email: 'nabin@gmail.com',
       requiredAmount: 80000,
       identityDocument: 'citizenship.jpeg',
       description: 'Needs Aids for Education',
@@ -66,10 +66,10 @@ async function main() {
       secretKey: 'C3ef',
     },
     {
-      name: 'Sudarshan',
+      name: 'Kushal',
       phoneNumber: '9857236514',
-      address: 'Pokhara,GaneshTole',
-      email: 'Sudarshan@gmail.com',
+      address: 'Pokhara,birauta',
+      email: 'kushal@gmail.com',
       requiredAmount: 40000,
       identityDocument: 'citizenship.jpeg',
       description: 'Needs Aids for Treatment of my dog',
