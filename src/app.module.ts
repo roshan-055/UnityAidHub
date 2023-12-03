@@ -13,7 +13,6 @@ import { WithdrawalFormModule } from './withdrawal-form/withdrawal-form.module';
 import { DonorsModule } from './donors/donors.module';
 import { DonationsModule } from './donations/donations.module';
 import { CommentsModule } from './comments/comments.module';
-import { EmailNotificationsModule } from './email-notifications/email-notifications.module';
 @Module({
   imports: [
     PrismaModule,
@@ -28,7 +27,6 @@ import { EmailNotificationsModule } from './email-notifications/email-notificati
     DonorsModule,
     DonationsModule,
     CommentsModule,
-    EmailNotificationsModule,
   ],
   controllers: [AppController],
   providers: [AppService],
