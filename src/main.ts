@@ -11,9 +11,9 @@ async function bootstrap() {
   app.useGlobalPipes(new ValidationPipe({ whitelist: true }));
 
   const config = new DocumentBuilder()
-    .setTitle('sahayog')
-    .setDescription('API for Sahayog')
-    .addTag('Sahayog')
+    .setTitle('UnityAidHub')
+    .setDescription('API for UnityAidHub')
+    .addTag('UnityAidHub')
     .setVersion('0.1')
     .addBearerAuth()
     .build();
