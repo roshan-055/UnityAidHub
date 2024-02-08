@@ -1,6 +1,13 @@
+import { Type } from '@prisma/client';
 import { ApiProperty } from '@nestjs/swagger';
 import { Status } from '@prisma/client';
-import { IsNotEmpty, IsOptional, IsString } from 'class-validator';
+import {
+  IsDate,
+  IsNotEmpty,
+  IsNumber,
+  IsOptional,
+  IsString,
+} from 'class-validator';
 
 export class CreatePostDto {
   @ApiProperty()
@@ -22,30 +29,42 @@ export class CreatePostDto {
   endDate: Date;
 
   @ApiProperty()
+  @IsNumber()
   @IsNotEmpty()
   goalAmount: number;
 
   @ApiProperty()
-  @IsNotEmpty()
+  @IsNumber()
+  @IsOptional()
   currentAmount: number;
 
   @ApiProperty()
   @IsOptional()
-  imageUrl: string;
+  image: string[];
 
   @ApiProperty()
   @IsOptional()
-  view: number | null;
+  view: number;
 
   @ApiProperty({ default: 'NOTVERIFIED' })
   @IsOptional()
   status: Status;
 
+  @ApiProperty({ default: 'BASIC' })
+  @IsOptional()
+  postType: Type;
+
+  @ApiProperty()
+  @IsOptional()
+  postUpdates: string;
+
   @ApiProperty()
   @IsNotEmpty()
+  @IsNumber()
   categoryId: number;
 
   @ApiProperty()
   @IsNotEmpty()
-  fundraiserId: number;
+  @IsNumber()
+  userId: number;
 }

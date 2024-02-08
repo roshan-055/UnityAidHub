@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { CreateAdDto } from './dto/create-ad.dto';
 import { UpdateAdDto } from './dto/update-ad.dto';
 import { PrismaService } from 'src/prisma/prisma.service';
+import { Ads } from '@prisma/client';
 
 @Injectable()
 export class AdsService {
@@ -32,15 +33,49 @@ export class AdsService {
     });
     return ads;
   }
+  
+  async checkEndDate() {
+    //get all ads
+    const ads = await this.prisma.ads.findMany();
+    //Iterate through each ads
+    for (const ad of ads) {
+      function today(): Date {
+        const now = new Date();
+        now.setHours(0, 0, 0, 0);
+        return now;
+      }
+      if (new Date(ad.endDate.setHours(0, 0, 0, 0)) <= today()) {
+        await this.prisma.ads.update({
+          where: { id: ad.id },
+          data: { activity: 'INACTIVE' },
+        });
+      }
+      else{
+        await this.prisma.ads.update({
+          where: { id: ad.id },
+          data: { activity: 'ACTIVE' },
+        });
+      }
+    }
+  }
 
   async findAll() {
     return await this.prisma.ads.findMany({
       include: {
-        AdCategory: {
+        adCategory: {
           select: {
             name: true,
           },
         },
+      },
+    });
+  }
+
+  async findActiveAds() {
+    this.checkEndDate();
+    return await this.prisma.ads.findMany({
+      where: {
+        activity: 'ACTIVE',
       },
     });
   }

@@ -38,6 +38,7 @@ export class CreateAdDto {
   title: string;
 
   @ApiProperty()
+  @IsString()
   @IsOptional()
   description: string;
 

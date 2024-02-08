@@ -1,25 +1,28 @@
-import { ApiProperty } from '@nestjs/swagger';
-import { Donation } from '@prisma/client';
+import { ApiProperty } from "@nestjs/swagger";
+import { $Enums, Donation, Payment } from "@prisma/client";
 
 export class DonationEntity implements Donation {
-  @ApiProperty()
-  id: number;
+    @ApiProperty()
+    payment: Payment;
 
-  @ApiProperty()
-  amount: number;
+    @ApiProperty()
+    id: number;
 
-  @ApiProperty()
-  remarks: string;
+    @ApiProperty()
+    amount: number;
 
-  @ApiProperty()
-  createdAt: Date;
+    @ApiProperty()
+    remarks: string;
 
-  @ApiProperty()
-  updatedAt: Date;
+    @ApiProperty()
+    createdAt: Date;
 
-  @ApiProperty()
-  fundraiserId: number;
+    @ApiProperty()
+    updatedAt: Date;
 
-  @ApiProperty()
-  donorId: number;
+    @ApiProperty()
+    postId: number;
+
+    @ApiProperty()
+    userId: number;
 }

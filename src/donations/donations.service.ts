@@ -5,37 +5,38 @@ import { PrismaService } from 'src/prisma/prisma.service';
 
 @Injectable()
 export class DonationsService {
-  constructor(private prisma: PrismaService) {}
+  constructor(private Prisma: PrismaService) {}
 
   async create(createDonationDto: CreateDonationDto) {
-    const { amount, remarks, donorId, fundraiserId } = createDonationDto;
-    const donation = await this.prisma.donation.create({
+    const { amount, remarks, postId, userId, payment } = createDonationDto;
+    const donation = await this.Prisma.donation.create({
       data: {
         amount,
         remarks,
-        donorId,
-        fundraiserId,
+        postId,
+        userId,
+        payment,
       },
     });
     return donation;
   }
 
   async findAll() {
-    return await this.prisma.donation.findMany();
+    return await this.Prisma.donation.findMany();
   }
 
   async findOne(id: number) {
-    return await this.prisma.donation.findUnique({ where: { id: id } });
+    return await this.Prisma.donation.findUnique({ where: { id: id } });
   }
 
   async update(id: number, updateDonationDto: UpdateDonationDto) {
-    return await this.prisma.donation.update({
+    return await this.Prisma.donation.update({
       where: { id },
       data: updateDonationDto,
     });
   }
 
   async remove(id: number) {
-    return await this.prisma.donation.delete({ where: { id: id } });
+    return await this.Prisma.donation.delete({ where: { id: id } });
   }
 }

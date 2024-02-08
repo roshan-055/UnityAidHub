@@ -1,27 +1,29 @@
-/* eslint-disable prettier/prettier */
-//src/auth/jwt.strategy.ts
+// src/auth/jwt.strategy.ts
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { PassportStrategy } from '@nestjs/passport';
 import { ExtractJwt, Strategy } from 'passport-jwt';
 import { jwtSecret } from './auth.module';
-import { AdminService } from 'src/admin/admin.service';
+import { UserService } from 'src/user/user.service';
 
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy, 'jwt') {
-  constructor(private adminService: AdminService) {
+  constructor(private userService: UserService) {
     super({
       jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
       secretOrKey: jwtSecret,
     });
   }
 
-  async validate(payload: { adminId: number; name: string; email: string }) {
-    const admin = await this.adminService.findOne(payload.adminId);
+  async validate(payload: { userId: number; role: string }) {
+    const { userId, role } = payload;
 
-    if (!admin) {
+    const user = await this.userService.findOne(userId);
+
+    if (!user) {
       throw new UnauthorizedException();
     }
 
-    return admin;
+    // Attach the 'role' property to the user object
+    return { ...user, role };
   }
 }

@@ -11,6 +11,7 @@ import { AdsService } from './ads.service';
 import { CreateAdDto } from './dto/create-ad.dto';
 import { UpdateAdDto } from './dto/update-ad.dto';
 import { ApiTags } from '@nestjs/swagger';
+import { Ads } from '@prisma/client';
 
 @Controller('ads')
 @ApiTags('Ads')
@@ -25,6 +26,11 @@ export class AdsController {
   @Get()
   findAll() {
     return this.adsService.findAll();
+  }
+
+  @Get('/active')
+  findActiveAds() {
+    return this.adsService.findActiveAds();
   }
 
   @Get(':id')
