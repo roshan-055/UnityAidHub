@@ -33,7 +33,7 @@ export class AdsService {
     });
     return ads;
   }
-  
+
   async checkEndDate() {
     //get all ads
     const ads = await this.prisma.ads.findMany();
@@ -49,8 +49,7 @@ export class AdsService {
           where: { id: ad.id },
           data: { activity: 'INACTIVE' },
         });
-      }
-      else{
+      } else {
         await this.prisma.ads.update({
           where: { id: ad.id },
           data: { activity: 'ACTIVE' },
@@ -58,6 +57,7 @@ export class AdsService {
       }
     }
   }
+
 
   async findAll() {
     return await this.prisma.ads.findMany({
