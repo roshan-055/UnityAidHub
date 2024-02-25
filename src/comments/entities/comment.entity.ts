@@ -16,4 +16,7 @@ export class CommentEntity implements Comment {
 
   @ApiProperty()
   updatedAt: Date;
+
+  @ApiProperty()
+  userId: number;
 }

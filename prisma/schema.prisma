@@ -1,6 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -10,15 +7,41 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Admin {
-  id        Int       @id @default(autoincrement())
-  name      String?
-  email     String    @unique
-  password  String
-  createdAt DateTime  @default(now())
-  updatedAt DateTime? @updatedAt
+// User and UserRole models for role-based authentication
+model User {
+  id                Int        @id @default(autoincrement())
+  name              String
+  phoneNumber       String?    @unique
+  email             String     @unique
+  address           String?
+  password          String
+  roles             Role       @default(USER)
+  activity          Activity   @default(ACTIVE)
+  createdAt         DateTime   @default(now())
+  updatedAt         DateTime   @updatedAt
+  comments          Comment[]
+  likes             Like[]
+  donations         Donation[]
+  post              Post[]
+  profilePictureUrl String?
 }
 
+enum Role {
+  ADMIN
+  USER
+  FUNDRAISER
+  DONOR
+}
+
+model Like {
+  id        Int     @id @default(autoincrement())
+  userId    Int
+  user      User    @relation(fields: [userId], references: [id])
+  Comment   Comment @relation(fields: [commentId], references: [id])
+  commentId Int
+}
+
+// Post model
 model Post {
   id            Int        @id @default(autoincrement())
   title         String
@@ -26,49 +49,39 @@ model Post {
   startDate     DateTime?
   endDate       DateTime?
   goalAmount    Int
-  currentAmount Int
-  imageUrl      String?
+  currentAmount Int?
+  image         String[] //image upload return url and send string of url for backend store {}
   view          Int?
-  status        Status?    @default(NOTVERIFIED)
+  status        Status     @default(NOTVERIFIED)
+  postType      Type       @default(BASIC)
+  postUpdates   String?
   createdAt     DateTime   @default(now())
   updatedAt     DateTime   @updatedAt
   donations     Donation[]
-  Comment       Comment[]
-  Category      Category   @relation(fields: [categoryId], references: [id])
+  comments      Comment[]
+  category      Category   @relation(fields: [categoryId], references: [id])
   categoryId    Int
-  Fundraiser    Fundraiser @relation(fields: [fundraiserId], references: [id])
-  fundraiserId  Int
+  User          User       @relation(fields: [userId], references: [id])
+  userId        Int
 }
 
-model Fundraiser {
-  id                 Int                 @id @default(autoincrement())
-  name               String
-  phoneNumber        String
-  address            String
-  email              String
-  requiredAmount     Int
-  identityDocument   String
-  description        String
-  supportingDocument String[]
-  url                String?
-  secretKey          String
-  createdAt          DateTime            @default(now())
-  updatedAt          DateTime            @updatedAt
-  post               Post[]
-  withdrawal         WithdrawalForm[]
+enum Type {
+  BASIC
+  URGENT
+  TAX_BENIFIT
 }
 
-model WithdrawalForm {
-  id               Int         @id @default(autoincrement())
-  withdrawalAmount Int
-  withdrawalType   Payment
-  accountNumber    String
-  accountName      String
-  identityDocument String
-  Fundraiser       Fundraiser? @relation(fields: [fundraiserId], references: [id])
-  fundraiserId     Int?
+model Pages {
+  id        Int      @id @default(autoincrement())
+  title     String
+  slug      String
+  imageUrl  String[]
+  content   String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
+// Enums for Payment
 enum Payment {
   BANK
   ESEWA
@@ -82,37 +95,31 @@ enum Status {
   NOTVERIFIED
 }
 
+// Donation model
 model Donation {
-  id           Int      @id @default(autoincrement())
-  amount       Float
-  remarks      String?
-  createdAt    DateTime @default(now())
-  updatedAt    DateTime @updatedAt
-  fundraiser   Post     @relation(fields: [fundraiserId], references: [id])
-  fundraiserId Int
-  Donor        Donor?   @relation(fields: [donorId], references: [id])
-  donorId      Int?
+  id        Int      @id @default(autoincrement())
+  amount    Float
+  remarks   String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  post      Post     @relation(fields: [postId], references: [id])
+  postId    Int
+  payment   Payment
+  User      User     @relation(fields: [userId], references: [id])
+  userId    Int
 }
 
-model Donor {
-  id          Int        @id @default(autoincrement())
-  name        String
-  email       String
-  phoneNumber String
-  address     String
-  donation    Donation[]
-  createdAt   DateTime   @default(now())
-  updatedAt   DateTime   @updatedAt
-}
-
+// Category model
 model Category {
-  id          Int           @id @default(autoincrement())
-  name        String
-  createdAt   DateTime      @default(now())
-  updatedAt   DateTime      @updatedAt
-  post        Post[]
+  id        Int      @id @default(autoincrement())
+  name      String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  posts     Post[]
+  blog      Blog[]
 }
 
+// Ads model
 model Ads {
   id           Int        @id @default(autoincrement())
   title        String
@@ -124,21 +131,24 @@ model Ads {
   endDate      DateTime?
   createdAt    DateTime   @default(now())
   updatedAt    DateTime   @updatedAt
-  AdCategory   AdCategory @relation(fields: [adCategoryId], references: [id])
+  adCategory   AdCategory @relation(fields: [adCategoryId], references: [id])
   adCategoryId Int
 }
 
+// Enums for Activity
 enum Activity {
   ACTIVE
   INACTIVE
 }
 
+// AdCategory model
 model AdCategory {
   id   Int    @id @default(autoincrement())
   name String
   ads  Ads[]
 }
 
+// Comment model
 model Comment {
   id        Int      @id @default(autoincrement())
   body      String
@@ -146,4 +156,19 @@ model Comment {
   post      Post     @relation(fields: [postId], references: [id])
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  User      User     @relation(fields: [userId], references: [id])
+  userId    Int
+  Like      Like[]
+}
+
+model Blog {
+  id          Int      @id @default(autoincrement())
+  title       String
+  description String
+  imageUrl    String[]
+  author      String
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  Category    Category @relation(fields: [categoryId], references: [id])
+  categoryId  Int
 }

@@ -10,4 +10,8 @@ export class CreateCommentDto {
   @ApiProperty()
   @IsNumber()
   postId: number;
+
+  @ApiProperty()
+  @IsNumber()
+  userId: number;
 }

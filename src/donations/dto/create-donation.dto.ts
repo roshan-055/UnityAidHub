@@ -1,20 +1,26 @@
-import { ApiProperty } from '@nestjs/swagger';
-import { IsNotEmpty, IsNumber, IsOptional, IsString } from 'class-validator';
+import { ApiProperty } from "@nestjs/swagger"
+import { Payment } from "@prisma/client";
+import { IsNotEmpty, IsOptional } from "class-validator"
 
 export class CreateDonationDto {
-  @ApiProperty()
-  @IsNumber()
-  @IsNotEmpty()
-  amount: number;
 
-  @ApiProperty()
-  @IsOptional()
-  @IsString()
-  remarks: string;
+    @ApiProperty()
+    @IsNotEmpty()
+    amount:number;
 
-  @ApiProperty()
-  donorId: number;
+    @ApiProperty()
+    @IsOptional()
+    remarks:string;
+    
+    @ApiProperty()
+    @IsNotEmpty()
+    postId:number;
 
-  @ApiProperty()
-  fundraiserId: number;
+    @ApiProperty()
+    @IsNotEmpty()
+    userId:number;
+
+    @ApiProperty()
+    @IsOptional()
+    payment:Payment;
 }

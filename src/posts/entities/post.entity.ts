@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { Post, Status } from '@prisma/client';
+import { Post, Prisma, Status, Type } from '@prisma/client';
 
 export class PostEntity implements Post {
   @ApiProperty()
@@ -23,14 +23,20 @@ export class PostEntity implements Post {
   @ApiProperty()
   currentAmount: number;
 
-  @ApiProperty()
-  imageUrl: string;
+  @ApiProperty({ required: false, nullable: true })
+  image: string[];
 
   @ApiProperty()
   view: number;
 
   @ApiProperty()
   status: Status;
+
+  @ApiProperty()
+  postType: Type;
+
+  @ApiProperty()
+  postUpdates: string;
 
   @ApiProperty()
   createdAt: Date;
@@ -42,5 +48,5 @@ export class PostEntity implements Post {
   categoryId: number;
 
   @ApiProperty()
-  fundraiserId: number;
+  userId: number;
 }
