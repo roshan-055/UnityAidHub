@@ -40,16 +40,30 @@ export class PostsService {
         categoryId,
         userId,
       },
+      include: {
+        comments: true,
+      },
     });
     return post;
   }
 
   async findAll() {
-    return await this.prisma.post.findMany();
+    return await this.prisma.post.findMany({
+      include: {
+        donations: true,
+        comments: true,
+      },
+    });
   }
 
   async findOne(id: number) {
-    return await this.prisma.post.findUnique({ where: { id: id } });
+    return await this.prisma.post.findUnique({
+      where: { id: id },
+      include: {
+        donations: true,
+        comments: true,
+      },
+    });
   }
 
   async update(id: number, updatePostDto: UpdatePostDto) {

@@ -20,11 +20,20 @@ export class CommentsService {
   }
 
   async findAll() {
-    return await this.prisma.comment.findMany();
+    return await this.prisma.comment.findMany({
+      include: {
+        Like: true,
+      },
+    });
   }
 
   async findOne(id: number) {
-    return await this.prisma.comment.findUnique({ where: { id: id } });
+    return await this.prisma.comment.findUnique({
+      where: { id: id },
+      include: {
+        Like: true,
+      },
+    });
   }
 
   async update(id: number, updateCommentDto: UpdateCommentDto) {
