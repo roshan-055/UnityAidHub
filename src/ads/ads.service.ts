@@ -15,9 +15,9 @@ export class AdsService {
       imageUrl,
       activity,
       companyName,
-      adCategoryId,
       startDate,
       endDate,
+      type,
     } = createAdDto;
     const ads = await this.prisma.ads.create({
       data: {
@@ -28,7 +28,7 @@ export class AdsService {
         companyName,
         startDate,
         endDate,
-        adCategoryId: Number(adCategoryId),
+        type,
       },
     });
     return ads;
@@ -58,17 +58,8 @@ export class AdsService {
     }
   }
 
-
   async findAll() {
-    return await this.prisma.ads.findMany({
-      include: {
-        adCategory: {
-          select: {
-            name: true,
-          },
-        },
-      },
-    });
+    return await this.prisma.ads.findMany();
   }
 
   async findActiveAds() {

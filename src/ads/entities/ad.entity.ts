@@ -1,7 +1,10 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { $Enums, Activity, Ads } from '@prisma/client';
+import { $Enums, Activity, AdType, Ads } from '@prisma/client';
 
 export class AdEntity implements Ads {
+  @ApiProperty()
+  type: AdType;
+
   @ApiProperty()
   id: number;
 
@@ -32,6 +35,4 @@ export class AdEntity implements Ads {
   @ApiProperty()
   updatedAt: Date;
 
-  @ApiProperty()
-  adCategoryId: number;
 }
