@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { Activity } from '@prisma/client';
+import { Activity, AdType } from '@prisma/client';
 import {
   IsDate,
   IsNotEmpty,
@@ -49,6 +49,9 @@ export class CreateAdDto {
   @ApiProperty({ default: 'ACTIVE' })
   activity: Activity;
 
+  @ApiProperty({ default: 'BANNER' })
+  type: AdType;
+
   @ApiProperty()
   @IsString()
   @IsOptional()
@@ -66,7 +69,4 @@ export class CreateAdDto {
   @Type(() => Date)
   endDate: Date;
 
-  @ApiProperty()
-  @IsNotEmpty()
-  adCategoryId: number;
 }

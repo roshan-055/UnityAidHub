@@ -8,10 +8,13 @@ export class CategoryService {
   constructor(private prisma: PrismaService) {}
 
   async create(createCategoryDto: CreateCategoryDto) {
-    const { name } = createCategoryDto;
+    const { name, darkImage, lightImage, primaryImage } = createCategoryDto;
     const category = await this.prisma.category.create({
       data: {
         name,
+        darkImage,
+        lightImage,
+        primaryImage,
       },
     });
     return category;

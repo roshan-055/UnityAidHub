@@ -1,17 +1,25 @@
-import { ApiProperty } from "@nestjs/swagger";
-import { Category } from "@prisma/client";
+import { ApiProperty } from '@nestjs/swagger';
+import { Category } from '@prisma/client';
 
 export class CategoryEntity implements Category {
+  @ApiProperty()
+  darkImage: string;
 
-    @ApiProperty()
-    id: number;
+  @ApiProperty()
+  lightImage: string;
 
-    @ApiProperty()
-    name: string;
+  @ApiProperty()
+  primaryImage: string;
 
-    @ApiProperty()
-    createdAt: Date;
+  @ApiProperty()
+  id: number;
 
-    @ApiProperty()
-    updatedAt: Date;
+  @ApiProperty()
+  name: string;
+
+  @ApiProperty()
+  createdAt: Date;
+
+  @ApiProperty()
+  updatedAt: Date;
 }

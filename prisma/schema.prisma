@@ -111,12 +111,15 @@ model Donation {
 
 // Category model
 model Category {
-  id        Int      @id @default(autoincrement())
-  name      String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  posts     Post[]
-  blog      Blog[]
+  id           Int      @id @default(autoincrement())
+  name         String
+  darkImage    String
+  lightImage   String
+  primaryImage String
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+  posts        Post[]
+  blog         Blog[]
 }
 
 // Ads model
@@ -126,13 +129,20 @@ model Ads {
   description  String?
   imageUrl     String?
   activity     Activity   @default(ACTIVE)
+  type         AdType     @default(BANNER)
   companyName  String?
   startDate    DateTime?
   endDate      DateTime?
   createdAt    DateTime   @default(now())
   updatedAt    DateTime   @updatedAt
-  adCategory   AdCategory @relation(fields: [adCategoryId], references: [id])
-  adCategoryId Int
+  // adCategory   AdCategory @relation(fields: [adCategoryId], references: [id])
+  // adCategoryId Int
+}
+
+enum AdType {
+  BANNER
+  CARD
+  HALFBANNER
 }
 
 // Enums for Activity
@@ -142,11 +152,11 @@ enum Activity {
 }
 
 // AdCategory model
-model AdCategory {
-  id   Int    @id @default(autoincrement())
-  name String
-  ads  Ads[]
-}
+// model AdCategory {
+//   id   Int    @id @default(autoincrement())
+//   name String
+//   ads  Ads[]
+// }
 
 // Comment model
 model Comment {
