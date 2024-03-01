@@ -3,6 +3,12 @@ import { Post, Prisma, Status, Type } from '@prisma/client';
 
 export class PostEntity implements Post {
   @ApiProperty()
+  country: string;
+
+  @ApiProperty()
+  documents: string[];
+
+  @ApiProperty()
   id: number;
 
   @ApiProperty()

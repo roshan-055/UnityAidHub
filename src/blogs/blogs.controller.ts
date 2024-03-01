@@ -6,12 +6,15 @@ import {
   Patch,
   Param,
   Delete,
+  UseInterceptors,
+  UploadedFiles,
 } from '@nestjs/common';
 import { BlogsService } from './blogs.service';
 import { CreateBlogDto } from './dto/create-blog.dto';
 import { UpdateBlogDto } from './dto/update-blog.dto';
 import { ApiCreatedResponse, ApiOkResponse, ApiTags } from '@nestjs/swagger';
 import { BlogEntity } from './entities/blog.entity';
+import { FileInterceptor } from '@nestjs/platform-express';
 
 @Controller('blogs')
 @ApiTags('blog')
@@ -20,7 +23,11 @@ export class BlogsController {
 
   @Post()
   @ApiCreatedResponse({ type: BlogEntity })
-  create(@Body() createBlogDto: CreateBlogDto) {
+  @UseInterceptors(FileInterceptor('imageUrl'))
+  create(
+    @Body() createBlogDto: CreateBlogDto,
+    @UploadedFiles() imageUrl: Express.Multer.File[],
+  ) {
     return this.blogsService.create(createBlogDto);
   }
 

@@ -55,8 +55,10 @@ model Post {
   status        Status     @default(NOTVERIFIED)
   postType      Type       @default(BASIC)
   postUpdates   String?
+  country       String?
   createdAt     DateTime   @default(now())
   updatedAt     DateTime   @updatedAt
+  documents     String[]
   donations     Donation[]
   comments      Comment[]
   category      Category   @relation(fields: [categoryId], references: [id])
@@ -124,17 +126,17 @@ model Category {
 
 // Ads model
 model Ads {
-  id           Int        @id @default(autoincrement())
-  title        String
-  description  String?
-  imageUrl     String?
-  activity     Activity   @default(ACTIVE)
-  type         AdType     @default(BANNER)
-  companyName  String?
-  startDate    DateTime?
-  endDate      DateTime?
-  createdAt    DateTime   @default(now())
-  updatedAt    DateTime   @updatedAt
+  id          Int       @id @default(autoincrement())
+  title       String
+  description String?
+  imageUrl    String?
+  activity    Activity  @default(ACTIVE)
+  type        AdType    @default(BANNER)
+  companyName String?
+  startDate   DateTime?
+  endDate     DateTime?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
   // adCategory   AdCategory @relation(fields: [adCategoryId], references: [id])
   // adCategoryId Int
 }
