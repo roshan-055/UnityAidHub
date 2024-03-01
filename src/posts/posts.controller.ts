@@ -6,11 +6,15 @@ import {
   Patch,
   Param,
   Delete,
+  UseInterceptors,
+  UploadedFile,
+  UploadedFiles,
 } from '@nestjs/common';
 import { PostsService } from './posts.service';
 import { CreatePostDto } from './dto/create-post.dto';
 import { UpdatePostDto } from './dto/update-post.dto';
 import { ApiTags } from '@nestjs/swagger';
+import { FilesInterceptor } from '@nestjs/platform-express';
 
 @Controller('posts')
 @ApiTags('post')
@@ -18,7 +22,11 @@ export class PostsController {
   constructor(private readonly postsService: PostsService) {}
 
   @Post()
-  create(@Body() createPostDto: CreatePostDto) {
+  @UseInterceptors(FilesInterceptor('image'))
+  create(
+    @Body() createPostDto: CreatePostDto,
+    @UploadedFiles() image: Express.Multer.File[],
+  ) {
     return this.postsService.create(createPostDto);
   }
 

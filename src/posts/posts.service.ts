@@ -11,12 +11,8 @@ export class PostsService {
     const {
       title,
       description,
-      startDate,
-      endDate,
       goalAmount,
-      currentAmount,
       image,
-      view,
       status,
       postType,
       postUpdates,
@@ -28,12 +24,8 @@ export class PostsService {
       data: {
         title,
         description,
-        startDate,
-        endDate,
         goalAmount,
-        currentAmount,
         image,
-        view,
         status,
         postType,
         postUpdates,
@@ -53,12 +45,18 @@ export class PostsService {
         donations: true,
         comments: true,
       },
+      where: {
+        status: 'VERIFIED',
+      },
     });
   }
 
   async findOne(id: number) {
     return await this.prisma.post.findUnique({
-      where: { id: id },
+      where: {
+        id: id,
+        status: 'VERIFIED',
+      },
       include: {
         donations: true,
         comments: true,

@@ -21,30 +21,13 @@ export class CreatePostDto {
   description: string;
 
   @ApiProperty()
-  @IsOptional()
-  startDate: Date;
-
-  @ApiProperty()
-  @IsOptional()
-  endDate: Date;
-
-  @ApiProperty()
   @IsNumber()
   @IsNotEmpty()
   goalAmount: number;
 
   @ApiProperty()
-  @IsNumber()
-  @IsOptional()
-  currentAmount: number;
-
-  @ApiProperty()
   @IsOptional()
   image: string[];
-
-  @ApiProperty()
-  @IsOptional()
-  view: number;
 
   @ApiProperty({ default: 'NOTVERIFIED' })
   @IsOptional()

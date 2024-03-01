@@ -6,12 +6,16 @@ import {
   Patch,
   Param,
   Delete,
+  UseInterceptors,
+  UploadedFile,
+  UploadedFiles,
 } from '@nestjs/common';
 import { PagesService } from './pages.service';
 import { CreatePageDto } from './dto/create-page.dto';
 import { UpdatePageDto } from './dto/update-page.dto';
 import { ApiCreatedResponse, ApiOkResponse, ApiTags } from '@nestjs/swagger';
 import { PageEntity } from './entities/page.entity';
+import { FileInterceptor } from '@nestjs/platform-express';
 
 @Controller('pages')
 @ApiTags('pages')
@@ -20,7 +24,11 @@ export class PagesController {
 
   @Post()
   @ApiCreatedResponse({ type: PageEntity })
-  create(@Body() createPageDto: CreatePageDto) {
+  @UseInterceptors(FileInterceptor('imageUrl'))
+  create(
+    @Body() createPageDto: CreatePageDto,
+    @UploadedFiles() imageUrl: Express.Multer.File[],
+  ) {
     return this.pagesService.create(createPageDto);
   }
 
