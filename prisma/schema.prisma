@@ -106,7 +106,7 @@ model Donation {
   updatedAt DateTime @updatedAt
   post      Post     @relation(fields: [postId], references: [id])
   postId    Int
-  payment   Payment
+  payment   Payment  @default(KHALTI)
   User      User     @relation(fields: [userId], references: [id])
   userId    Int
 }

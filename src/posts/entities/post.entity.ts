@@ -41,7 +41,7 @@ export class PostEntity implements Post {
   @ApiProperty()
   postType: Type;
 
-  @ApiProperty()
+  @ApiProperty({ required: false, nullable: true })
   postUpdates: string;
 
   @ApiProperty()
