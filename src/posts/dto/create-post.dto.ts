@@ -21,13 +21,21 @@ export class CreatePostDto {
   description: string;
 
   @ApiProperty()
-  @IsNumber()
   @IsNotEmpty()
-  goalAmount: number;
+  goalAmount: string;
+
+  @ApiProperty()
+  @IsString()
+  @IsOptional()
+  country: string;
 
   @ApiProperty()
   @IsOptional()
   image: string[];
+
+  @ApiProperty()
+  @IsOptional()
+  documents: string[];
 
   @ApiProperty({ default: 'NOTVERIFIED' })
   @IsOptional()

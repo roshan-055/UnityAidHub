@@ -48,8 +48,8 @@ model Post {
   description   String
   startDate     DateTime?
   endDate       DateTime?
-  goalAmount    Int
-  currentAmount Int?
+  goalAmount    String
+  currentAmount String?
   image         String[] //image upload return url and send string of url for backend store {}
   view          Int?
   status        Status     @default(NOTVERIFIED)

@@ -1,0 +1,3 @@
+-- AlterTable
+ALTER TABLE "Post" ALTER COLUMN "goalAmount" SET DATA TYPE TEXT,
+ALTER COLUMN "currentAmount" SET DATA TYPE TEXT;
