@@ -13,8 +13,10 @@ export class PostsService {
       description,
       goalAmount,
       image,
+      documents,
       status,
       postType,
+      country,
       postUpdates,
       categoryId,
       userId,
@@ -26,14 +28,13 @@ export class PostsService {
         description,
         goalAmount,
         image,
+        documents,
         status,
         postType,
+        country,
         postUpdates,
         categoryId,
         userId,
-      },
-      include: {
-        comments: true,
       },
     });
     return post;
@@ -45,18 +46,36 @@ export class PostsService {
         donations: true,
         comments: true,
       },
+    });
+  }
+
+  async getVerifiedPost() {
+    return await this.prisma.post.findMany({
+      include: {
+        donations: true,
+        comments: true,
+      },
       where: {
         status: 'VERIFIED',
       },
     });
   }
 
+  async getUnverifiedPost() {
+    return await this.prisma.post.findMany({
+      include: {
+        donations: true,
+        comments: true,
+      },
+      where: {
+        status: 'NOTVERIFIED',
+      },
+    });
+  }
+
   async findOne(id: number) {
     return await this.prisma.post.findUnique({
-      where: {
-        id: id,
-        status: 'VERIFIED',
-      },
+      where: { id: id },
       include: {
         donations: true,
         comments: true,

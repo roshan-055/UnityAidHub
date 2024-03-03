@@ -5,7 +5,7 @@ export class PostEntity implements Post {
   @ApiProperty()
   country: string;
 
-  @ApiProperty()
+  @ApiProperty({ required: false, nullable: true })
   documents: string[];
 
   @ApiProperty()
@@ -24,10 +24,10 @@ export class PostEntity implements Post {
   endDate: Date;
 
   @ApiProperty()
-  goalAmount: number;
+  goalAmount: string;
 
   @ApiProperty()
-  currentAmount: number;
+  currentAmount: string;
 
   @ApiProperty({ required: false, nullable: true })
   image: string[];

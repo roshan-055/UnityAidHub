@@ -35,6 +35,16 @@ export class PostsController {
     return this.postsService.findAll();
   }
 
+  @Get('/verified')
+  getVerifiedPost() {
+    return this.postsService.getVerifiedPost();
+  }
+
+  @Get('/notverified')
+  getUnverifiedPost() {
+    return this.postsService.getUnverifiedPost();
+  }
+
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.postsService.findOne(+id);
