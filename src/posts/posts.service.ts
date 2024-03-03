@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreatePostDto } from './dto/create-post.dto';
 import { UpdatePostDto } from './dto/update-post.dto';
 import { PrismaService } from 'src/prisma/prisma.service';
@@ -88,6 +88,18 @@ export class PostsService {
       where: { id },
       data: updatePostDto,
     });
+  }
+
+  async updateStatus(id: number){
+    const post = await this.prisma.post.update({
+      where: { id },
+      data: { status: 'VERIFIED' },
+    });
+
+    if (!post) {
+      throw new NotFoundException(`Post with ID ${id} not found`);
+    }
+    return post;
   }
 
   async remove(id: number) {

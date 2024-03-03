@@ -9,6 +9,7 @@ import {
   UseInterceptors,
   UploadedFile,
   UploadedFiles,
+  NotFoundException,
 } from '@nestjs/common';
 import { PostsService } from './posts.service';
 import { CreatePostDto } from './dto/create-post.dto';
@@ -53,6 +54,11 @@ export class PostsController {
   @Patch(':id')
   update(@Param('id') id: string, @Body() updatePostDto: UpdatePostDto) {
     return this.postsService.update(+id, updatePostDto);
+  }
+
+  @Patch(':id/verify')
+  updateStatus(@Param('id') id: string) {
+    return this.postsService.updateStatus(+id);
   }
 
   @Delete(':id')
