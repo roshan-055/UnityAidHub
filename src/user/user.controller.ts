@@ -45,7 +45,7 @@ export class UserController {
 
   @Get('/all')
   @UseGuards(JwtAuthGuard, RoleGuard)
-  @Role('USER')
+  @Role('ADMIN')
   @ApiBearerAuth()
   @ApiOkResponse({ type: UserEntity, isArray: true })
   findAll() {
@@ -54,7 +54,7 @@ export class UserController {
 
   @Get(':id')
   @UseGuards(JwtAuthGuard, RoleGuard)
-  @Role('USER')
+  @Role('ADMIN')
   @ApiBearerAuth()
   @ApiOkResponse({ type: UserEntity })
   findOne(@Param('id') id: string) {
@@ -63,6 +63,7 @@ export class UserController {
 
   @Patch(':id')
   @UseGuards(JwtAuthGuard, RoleGuard)
+  @Role('ADMIN')
   @ApiBearerAuth()
   @ApiOkResponse({ type: UserEntity })
   update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
@@ -71,6 +72,7 @@ export class UserController {
 
   @Delete(':id')
   @UseGuards(JwtAuthGuard)
+  @Role('ADMIN')
   @ApiBearerAuth()
   @ApiOkResponse({ type: UserEntity })
   remove(@Param('id') id: string) {

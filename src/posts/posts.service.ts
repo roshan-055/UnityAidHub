@@ -43,7 +43,16 @@ export class PostsService {
   async findAll() {
     return await this.prisma.post.findMany({
       include: {
-        donations: true,
+        donations: {
+          select: {
+            amount: true,
+            User: {
+              select: {
+                name: true,
+              },
+            },
+          },
+        },
         comments: true,
       },
     });
@@ -52,7 +61,16 @@ export class PostsService {
   async getVerifiedPost() {
     return await this.prisma.post.findMany({
       include: {
-        donations: true,
+        donations: {
+          select: {
+            amount: true,
+            User: {
+              select: {
+                name: true,
+              },
+            },
+          },
+        },
         comments: true,
       },
       where: {
@@ -64,7 +82,16 @@ export class PostsService {
   async getUnverifiedPost() {
     return await this.prisma.post.findMany({
       include: {
-        donations: true,
+        donations: {
+          select: {
+            amount: true,
+            User: {
+              select: {
+                name: true,
+              },
+            },
+          },
+        },
         comments: true,
       },
       where: {
@@ -77,7 +104,16 @@ export class PostsService {
     return await this.prisma.post.findUnique({
       where: { id: id },
       include: {
-        donations: true,
+        donations: {
+          select: {
+            amount: true,
+            User: {
+              select: {
+                name: true,
+              },
+            },
+          },
+        },
         comments: true,
       },
     });
@@ -90,7 +126,7 @@ export class PostsService {
     });
   }
 
-  async updateStatus(id: number){
+  async updateStatus(id: number) {
     const post = await this.prisma.post.update({
       where: { id },
       data: { status: 'VERIFIED' },
