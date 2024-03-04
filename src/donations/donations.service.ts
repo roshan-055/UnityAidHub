@@ -8,13 +8,13 @@ import { MailerService } from '@nestjs-modules/mailer';
 @Injectable()
 export class DonationsService {
   constructor(
-    private Prisma: PrismaService,
+    private prisma: PrismaService,
     private readonly mailerService: MailerService,
   ) {}
 
   async create(createDonationDto: CreateDonationDto) {
     const { amount, remarks, postId, userId, payment } = createDonationDto;
-    const donation = await this.Prisma.donation.create({
+    const donation = await this.prisma.donation.create({
       data: {
         amount,
         remarks,
@@ -23,7 +23,7 @@ export class DonationsService {
         payment,
       },
     });
-    const user = await this.Prisma.user.findUnique({
+    const user = await this.prisma.user.findUnique({
       where: { id: userId },
       select: { name: true, email: true },
     });
@@ -32,7 +32,7 @@ export class DonationsService {
   }
 
   async findAll() {
-    return await this.Prisma.donation.findMany();
+    return await this.prisma.donation.findMany();
   }
 
   async sendDonationConfirmationEmail(
@@ -79,17 +79,17 @@ export class DonationsService {
   }
 
   async findOne(id: number) {
-    return await this.Prisma.donation.findUnique({ where: { id: id } });
+    return await this.prisma.donation.findUnique({ where: { id: id } });
   }
 
   async update(id: number, updateDonationDto: UpdateDonationDto) {
-    return await this.Prisma.donation.update({
+    return await this.prisma.donation.update({
       where: { id },
       data: updateDonationDto,
     });
   }
 
   async remove(id: number) {
-    return await this.Prisma.donation.delete({ where: { id: id } });
+    return await this.prisma.donation.delete({ where: { id: id } });
   }
 }

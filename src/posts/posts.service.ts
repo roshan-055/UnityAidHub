@@ -2,10 +2,15 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreatePostDto } from './dto/create-post.dto';
 import { UpdatePostDto } from './dto/update-post.dto';
 import { PrismaService } from 'src/prisma/prisma.service';
+import { MailerService } from '@nestjs-modules/mailer';
+import { Post } from '@prisma/client';
 
 @Injectable()
 export class PostsService {
-  constructor(private readonly prisma: PrismaService) {}
+  constructor(
+    private readonly prisma: PrismaService,
+    private readonly mailerService: MailerService,
+  ) {}
 
   async create(createPostDto: CreatePostDto) {
     const {
@@ -38,6 +43,11 @@ export class PostsService {
         userId,
       },
     });
+    const user = await this.prisma.user.findUnique({
+      where: { id: userId },
+      select: { name: true, email: true },
+    });
+    await this.sendPostConfirmationEmail(post, user);
     return post;
   }
 
@@ -61,6 +71,43 @@ export class PostsService {
           },
         },
         comments: true,
+      },
+    });
+  }
+
+  async sendPostConfirmationEmail(
+    posts: Post,
+    user: { name: string; email: string },
+  ) {
+    const postDetails = {
+      email: process.env.SMTP_USER,
+    };
+
+    const message = `
+    Dear ${user.name},
+    
+    Thank you for submitting a post to Unity Aid Hub.
+    
+    Your post is currently under review and will be verified by our administrators. After confirmation to our policies, it will be posted for a fundraising campaign.
+    
+    We appreciate your dedication to our mission, and your post plays a crucial role in making a positive impact on the lives of those we serve.
+    
+    If you have any questions or need further assistance, please feel free to reach out to us at ${postDetails.email}.
+    
+    Best regards,
+    
+    Unity Aid Hub
+    ${postDetails.email}
+    `;
+
+    await this.mailerService.sendMail({
+      to: user.email,
+      subject: 'Fundraising Post Confirmation',
+      text: message,
+      context: {
+        postDetails: {
+          postId: posts.id,
+        },
       },
     });
   }
