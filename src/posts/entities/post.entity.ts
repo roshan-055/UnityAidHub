@@ -27,7 +27,7 @@ export class PostEntity implements Post {
   goalAmount: string;
 
   @ApiProperty()
-  currentAmount: string;
+  currentAmount: number;
 
   @ApiProperty({ required: false, nullable: true })
   image: string[];
