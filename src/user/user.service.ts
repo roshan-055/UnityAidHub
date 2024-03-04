@@ -34,7 +34,13 @@ export class UserService {
 
   //to find a specific user with given id
   async findOne(id: number) {
-    return await this.prisma.user.findUnique({ where: { id: id } });
+    return await this.prisma.user.findUnique({
+      where: { id: id },
+      include: {
+        post: true,
+        donations: true,
+      },
+    });
   }
 
   async update(id: number, updateUserDto: UpdateUserDto) {
