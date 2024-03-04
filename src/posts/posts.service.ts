@@ -27,6 +27,7 @@ export class PostsService {
         title,
         description,
         goalAmount,
+        currentAmount: 0,
         image,
         documents,
         status,
@@ -43,6 +44,12 @@ export class PostsService {
   async findAll() {
     return await this.prisma.post.findMany({
       include: {
+        User: {
+          select: {
+            id: true,
+            name: true,
+          },
+        },
         donations: {
           select: {
             amount: true,
@@ -61,6 +68,12 @@ export class PostsService {
   async getVerifiedPost() {
     return await this.prisma.post.findMany({
       include: {
+        User: {
+          select: {
+            id: true,
+            name: true,
+          },
+        },
         donations: {
           select: {
             amount: true,
@@ -82,6 +95,12 @@ export class PostsService {
   async getUnverifiedPost() {
     return await this.prisma.post.findMany({
       include: {
+        User: {
+          select: {
+            id: true,
+            name: true,
+          },
+        },
         donations: {
           select: {
             amount: true,
@@ -101,9 +120,31 @@ export class PostsService {
   }
 
   async findOne(id: number) {
-    return await this.prisma.post.findUnique({
+    const post = await this.prisma.post.findUnique({
       where: { id: id },
       include: {
+        donations: true,
+      },
+    });
+
+    if (!post) {
+      throw new NotFoundException('Post not found');
+    }
+    //add donation amount in a post in currentAmount field
+    const currentAmount = post.donations.reduce(
+      (total, donation) => total + donation.amount,
+      0,
+    );
+
+    const updatedPost = await this.prisma.post.update({
+      where: { id: post.id },
+      include: {
+        User: {
+          select: {
+            id: true,
+            name: true,
+          },
+        },
         donations: {
           select: {
             amount: true,
@@ -114,9 +155,20 @@ export class PostsService {
             },
           },
         },
-        comments: true,
+        comments: {
+          select: {
+            body: true,
+            userId: true,
+          },
+        },
+      },
+      data: {
+        view: post.view + 1, // Increment the view count by 1
+        currentAmount: currentAmount,
       },
     });
+
+    return updatedPost;
   }
 
   async update(id: number, updatePostDto: UpdatePostDto) {
