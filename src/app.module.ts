@@ -11,6 +11,10 @@ import { LikeModule } from './like/like.module';
 import { PagesModule } from './pages/pages.module';
 import { BlogsModule } from './blogs/blogs.module';
 import { AuthModule } from './auth/auth.module';
+import { DashboardModule } from './dashboard/dashboard.module';
+import { DashboardController } from './dashboard/dashboard.controller';
+import { DashboardService } from './dashboard/dashboard.service';
+import { PrismaService } from './prisma/prisma.service';
 @Module({
   imports: [
     CategoryModule,
@@ -23,8 +27,9 @@ import { AuthModule } from './auth/auth.module';
     LikeModule,
     PagesModule,
     BlogsModule,
+    DashboardModule,
   ],
-  controllers: [AppController],
-  providers: [AppService],
+  controllers: [AppController, DashboardController],
+  providers: [AppService, DashboardService, PrismaService],
 })
 export class AppModule {}
