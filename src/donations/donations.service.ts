@@ -4,16 +4,22 @@ import { UpdateDonationDto } from './dto/update-donation.dto';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { Donation } from '@prisma/client';
 import { MailerService } from '@nestjs-modules/mailer';
+import { StripeService } from 'src/stripe/stripe.service';
 
 @Injectable()
 export class DonationsService {
   constructor(
     private prisma: PrismaService,
     private readonly mailerService: MailerService,
+    private readonly stripeService: StripeService,
   ) {}
 
-  async create(createDonationDto: CreateDonationDto) {
+  async create(createDonationDto: CreateDonationDto): Promise<Donation> {
     const { amount, remarks, postId, userId, payment } = createDonationDto;
+
+    // Use the StripeService to create a payment intent
+    const clientSecret = await this.stripeService.createPayment(amount, 'usd');
+
     const donation = await this.prisma.donation.create({
       data: {
         amount,
@@ -23,12 +29,14 @@ export class DonationsService {
         payment,
       },
     });
+
     const user = await this.prisma.user.findUnique({
       where: { id: userId },
       select: { name: true, email: true },
     });
+
     await this.sendDonationConfirmationEmail(donation, user);
-    return donation;
+    return { ...donation, clientSecret };
   }
 
   async findAll() {
@@ -48,7 +56,7 @@ export class DonationsService {
     const message = `
   Dear ${user.name},
 
-  We're thrilled to express our deepest gratitude for your generous donation. Your support is invaluable to us, and it makes a significant impact on our mission.
+  We're thrilled to express our deepest gratitude for your generous donation. Your help is invaluable to us, and it makes a significant impact on our mission.
 
   Donation Details:
   - Amount: ${donationDetails.amount}

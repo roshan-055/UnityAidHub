@@ -180,7 +180,7 @@ export class PostsService {
     //add donation amount in a post in currentAmount field
     const currentAmount = post.donations.reduce(
       (total, donation) => total + donation.amount,
-      0,
+      0 * 100,
     );
 
     const updatedPost = await this.prisma.post.update({
@@ -195,6 +195,7 @@ export class PostsService {
         donations: {
           select: {
             amount: true,
+            payment: true,
             User: {
               select: {
                 name: true,

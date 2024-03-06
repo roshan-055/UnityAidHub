@@ -19,7 +19,7 @@ export class CreateDonationDto {
   @IsNotEmpty()
   userId: number;
 
-  @ApiProperty({ default: 'KHALTI' })
+  @ApiProperty({ default: 'STRIPE' })
   @IsOptional()
   payment: Payment;
 }

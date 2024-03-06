@@ -22,7 +22,12 @@ export class CommentsService {
   async findAll() {
     return await this.prisma.comment.findMany({
       include: {
-        Like: true,
+        User: {
+          select: {
+            name: true,
+            id: true,
+          },
+        },
       },
     });
   }
@@ -31,7 +36,12 @@ export class CommentsService {
     return await this.prisma.comment.findUnique({
       where: { id: id },
       include: {
-        Like: true,
+        User: {
+          select: {
+            name: true,
+            id: true,
+          },
+        },
       },
     });
   }

@@ -11,6 +11,7 @@ import { DonationsService } from './donations.service';
 import { CreateDonationDto } from './dto/create-donation.dto';
 import { UpdateDonationDto } from './dto/update-donation.dto';
 import { ApiTags } from '@nestjs/swagger';
+import { Donation } from '@prisma/client';
 
 @Controller('donations')
 @ApiTags('donation')
@@ -18,7 +19,7 @@ export class DonationsController {
   constructor(private readonly donationsService: DonationsService) {}
 
   @Post()
-  create(@Body() createDonationDto: CreateDonationDto) {
+  async create(@Body() createDonationDto: CreateDonationDto): Promise<Donation> {
     return this.donationsService.create(createDonationDto);
   }
 
