@@ -70,7 +70,17 @@ export class PostsService {
             },
           },
         },
-        comments: true,
+        comments: {
+          select: {
+            body: true,
+            User: {
+              select: {
+                name: true,
+                id: true,
+              },
+            },
+          },
+        },
       },
     });
   }
@@ -131,7 +141,17 @@ export class PostsService {
             },
           },
         },
-        comments: true,
+        comments: {
+          select: {
+            body: true,
+            User: {
+              select: {
+                name: true,
+                id: true,
+              },
+            },
+          },
+        },
       },
       where: {
         status: 'VERIFIED',
@@ -158,7 +178,17 @@ export class PostsService {
             },
           },
         },
-        comments: true,
+        comments: {
+          select: {
+            body: true,
+            User: {
+              select: {
+                name: true,
+                id: true,
+              },
+            },
+          },
+        },
       },
       where: {
         status: 'NOTVERIFIED',
@@ -206,7 +236,12 @@ export class PostsService {
         comments: {
           select: {
             body: true,
-            userId: true,
+            User: {
+              select: {
+                name: true,
+                id: true,
+              },
+            },
           },
         },
       },
