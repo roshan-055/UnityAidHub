@@ -18,7 +18,10 @@ export class DonationsService {
     const { amount, remarks, postId, userId, payment } = createDonationDto;
 
     // Use the StripeService to create a payment intent
-    const clientSecret = await this.stripeService.createPayment(amount, 'usd');
+    const clientSecret = await this.stripeService.createPayment(
+      amount * 100,
+      'usd',
+    );
 
     const donation = await this.prisma.donation.create({
       data: {
