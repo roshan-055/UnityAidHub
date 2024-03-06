@@ -3,6 +3,9 @@ import { Pages, Prisma } from '@prisma/client';
 
 export class PageEntity implements Pages {
   @ApiProperty()
+  userId: number;
+
+  @ApiProperty()
   id: number;
 
   @ApiProperty()

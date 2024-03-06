@@ -15,6 +15,7 @@ import { DashboardModule } from './dashboard/dashboard.module';
 import { DashboardController } from './dashboard/dashboard.controller';
 import { DashboardService } from './dashboard/dashboard.service';
 import { PrismaService } from './prisma/prisma.service';
+import { StripeModule } from './stripe/stripe.module';
 @Module({
   imports: [
     CategoryModule,
@@ -28,6 +29,7 @@ import { PrismaService } from './prisma/prisma.service';
     PagesModule,
     BlogsModule,
     DashboardModule,
+    StripeModule,
   ],
   controllers: [AppController, DashboardController],
   providers: [AppService, DashboardService, PrismaService],

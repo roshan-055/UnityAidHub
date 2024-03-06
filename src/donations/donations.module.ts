@@ -3,9 +3,11 @@ import { DonationsService } from './donations.service';
 import { DonationsController } from './donations.controller';
 import { PrismaModule } from 'src/prisma/prisma.module';
 import { MailerModule } from '@nestjs-modules/mailer';
+import { StripeModule } from 'src/stripe/stripe.module';
 
 @Module({
   imports: [
+    StripeModule,
     PrismaModule,
     MailerModule.forRoot({
       transport: {
